@@ -18,12 +18,12 @@ def input_students
   students
 end
 
-def specific_letter(students)
-  puts "Enter a letter:"
-  letter = gets.chomp
+def print(students)
+  count = 1
   students.each_with_index do |student, index|
-  if student[:name][0] == letter
+    if student[:name].length < 12
     puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
+    count += 1
     end
   end
 end
@@ -33,12 +33,6 @@ end
     puts "-------------"
   end
 
-  def print(students)
-    students.each_with_index do |student, index|
-      puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
-    end
-  end
-
   def print_footer(students)
   puts "Overall, we have #{students.count} great students"
   end
@@ -46,6 +40,6 @@ end
 
 students = input_students
 print_header
-# print(students)
-specific_letter(students)
+print(students)
+#specific_letter(students)
 print_footer(students)
