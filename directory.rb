@@ -2,48 +2,50 @@
 def input_students
   answer = "y"
   students = []
-  while answer == "y" do
-  puts "Please enter the name of the student"
-  puts "To finish, just hit return twice"
+  while answer == "y"
+    puts "Hello.  You will be asked to enter the name and other information of a student"
+    puts "To finish, just hit return twice"
   # get the first name
-  puts "Enter your name"
-  name = gets.chomp
+    puts "Enter the name of the student please"
+      name = gets.chomp
+      name = "Student" if name.empty?
+    puts "Enter the cohort of #{name}"
+      cohort = gets.chomp
+      cohort = "Unknown" if cohort.empty?
   # while the name is not empty, repeat this code
   #while !name.empty? do
-    puts "What hobbies do you like?"
-    hobbies = gets.chomp
-    puts "height in cm?"
-    height = gets.chomp
-    puts "country of birth?"
-    country_of_birth = gets.chomp
-    # add the student hash to the array
-    while name.empty? || hobbies.empty? || height.empty? || country_of_birth.empty?
-      puts "Inalid input"
-      puts "Enter your name"
-      name = gets.chomp
-      puts "What hobbies do you like?"
-      hobbies = gets.chomp
-      puts "height in cm?"
+    puts "Enter one hobby of #{name}"
+      hobby = gets.chomp
+      hobby = "Unknown" if hobby.empty?
+    puts "Enter the student's height (cm)"
       height = gets.chomp
-      puts "country of birth?"
+      height = "Unknown" if height.empty?
+    puts "Enter the country of birth of #{name}"
       country_of_birth = gets.chomp
-    end
-    students << {name: name, cohort: :november, hobbies: hobbies, height: height, country_of_birth: country_of_birth}
-    puts "Now we have #{students.count} students"
+      country_of_birth = :Unknown if country_of_birth.empty?
+    # add the student hash to the array
+    puts "Is the input for this student correct? (Type 'y' for yes or 'n' for no)"
+      input = gets.chomp
+        if input == "y"
+      students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
+      puts "Now we have #{students.count} students"
     # get another name from the user
-    puts "Input another student? type 'y' for yes or type 'n' for no"
-    answer = gets.chomp
-  end
+      puts "Input another student? (Type 'y' for yes or type 'n' for no)"
+      answer = gets.chomp
+      end
+    end
   # return the array of students
-  students
+  return students
 end
+
 
 def print_directory(students)
   count = 1
   line_width = 50
     while count <= students.length
       puts "#{count}: #{students[count-1][:name]}".center(line_width)
-      puts "#{students[count-1][:hobbies]}".center(line_width)
+      puts "#{students[count-1][:cohort]}".center(line_width)
+      puts "#{students[count-1][:hobby]}".center(line_width)
       puts "#{students[count-1][:height]}".center(line_width)
       puts "#{students[count-1][:country_of_birth]}".center(line_width)
     count += 1
