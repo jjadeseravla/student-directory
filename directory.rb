@@ -38,10 +38,14 @@ def input_students
   students
 end
 
-def print(students)
+def print_directory(students)
   count = 1
+  line_width = 50
     while count <= students.length
-    puts "#{count}: #{students[count-1][:name]} likes #{students[count-1][:hobbies]} and is #{students[count-1][:height]}cm.  Country of birth is #{students[count-1][:country_of_birth]} (#{students[count-1][:cohort]} cohort)"
+      puts "#{count}: #{students[count-1][:name]}".center(line_width)
+      puts "#{students[count-1][:hobbies]}".center(line_width)
+      puts "#{students[count-1][:height]}".center(line_width)
+      puts "#{students[count-1][:country_of_birth]}".center(line_width)
     count += 1
   end
 end
@@ -58,6 +62,6 @@ end
 
 students = input_students
 print_header
-print(students)
+print_directory(students)
 #specific_letter(students)
 print_footer(students)
