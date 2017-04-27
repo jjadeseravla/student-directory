@@ -1,4 +1,6 @@
-
+# change the way the users are displayed: print them grouped by cohorts.
+#To do this, you'll need to get a list of all existing cohorts (the map() method
+#iterate over it and only print the students from that cohort.
 def input_students
   answer = "y"
   students = []
@@ -7,37 +9,48 @@ def input_students
     puts "To finish, just hit return twice"
   # get the first name
     puts "Enter the name of the student please"
-      name = gets.chomp
-      name = "Student" if name.empty?
-    puts "Enter the cohort of #{name}"
-      cohort = gets.chomp
-      cohort = "Unknown" if cohort.empty?
-  # while the name is not empty, repeat this code
-  #while !name.empty? do
+    name = gets.chomp
+    name = "Student" if name.empty?
+    cohort_month = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+    puts "Enter the cohort (month) of #{name}"
+    cohort = gets.chomp.downcase
+      until cohort_month.include? (cohort)
+        puts "Not recognised, please type in month of cohort again"
+        cohort = gets.chomp.downcase
+      end
     puts "Enter one hobby of #{name}"
-      hobby = gets.chomp
-      hobby = "Unknown" if hobby.empty?
-    puts "Enter the student's height (cm)"
-      height = gets.chomp
-      height = "Unknown" if height.empty?
+    hobby = gets.chomp
+    hobby = "Unknown" if hobby.empty?
+    puts "Enter the student's height (cm) using numbers only"
+    height = gets.chomp
+    height = "Unknown" if height.empty?
     puts "Enter the country of birth of #{name}"
-      country_of_birth = gets.chomp
-      country_of_birth = :Unknown if country_of_birth.empty?
+    country_of_birth = gets.chomp
+    country_of_birth = :Unknown if country_of_birth.empty?
     # add the student hash to the array
     puts "Is the input for this student correct? (Type 'y' for yes or 'n' for no)"
-      input = gets.chomp
+    input = gets.chomp
         if input == "y"
-      students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
-      puts "Now we have #{students.count} students"
+          students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
+          puts "Now we have #{students.count} students"
     # get another name from the user
-      puts "Input another student? (Type 'y' for yes or type 'n' for no)"
-      answer = gets.chomp
+        puts "Input another student? (Type 'y' for yes or type 'n' for no)"
+        answer = gets.chomp
+        end
       end
-    end
   # return the array of students
-  return students
+    return students
 end
 
+def print_by_cohort(students)
+  by_cohort = []
+  students.select do |hash|
+    if hash[:cohort] == :january
+      by_cohort << hash
+      end
+    end
+  return by_cohort
+end
 
 def print_directory(students)
   count = 1
@@ -64,6 +77,7 @@ end
 
 students = input_students
 print_header
+students = print_by_cohort(students)
 print_directory(students)
 #specific_letter(students)
 print_footer(students)
