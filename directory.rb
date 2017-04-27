@@ -1,6 +1,6 @@
-# change the way the users are displayed: print them grouped by cohorts.
-#To do this, you'll need to get a list of all existing cohorts (the map() method
-#iterate over it and only print the students from that cohort.
+#Right now if we have only one student, the user will see a message "Now we have 1 students",
+#whereas it should be "Now we have 1 student".
+#How can you fix it so that it used singular form when appropriate and plural form otherwise?
 def input_students
   answer = "y"
   students = []
@@ -42,15 +42,15 @@ def input_students
     return students
 end
 
-def print_by_cohort(students)
-  by_cohort = []
-  students.select do |hash|
-    if hash[:cohort] == :january
-      by_cohort << hash
-      end
-    end
-  return by_cohort
-end
+# def print_by_cohort(students)
+#   by_cohort = []
+#   students.select do |hash|
+#     if hash[:cohort] == :january
+#       by_cohort << hash
+#       end
+#     end
+#   return by_cohort
+# end
 
 def print_directory(students)
   count = 1
@@ -70,14 +70,18 @@ end
     puts "-------------"
   end
 
-  def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+def print_footer(students)
+  if students.count == 1
+    puts "Overall, we have 1 great student"
+  elsif students.count >= 2
+    puts "Overall, we have #{students.count} great students"
   end
+end
 
 
 students = input_students
 print_header
-students = print_by_cohort(students)
+#students = print_by_cohort(students)
 print_directory(students)
 #specific_letter(students)
 print_footer(students)
