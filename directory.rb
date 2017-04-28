@@ -77,7 +77,7 @@ def input_students
     puts "Is the input for this student correct? (Type 'y' for yes or 'n' for no)"
     input = STDIN.gets.chomp
         if input == "y"
-          @students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
+          student_hash(name,cohort,hobby,height,country_of_birth)
           puts "Now we have #{@students.count} students"
     # get another name from the user
         puts "Input another student? (Type 'y' for yes or type 'n' for no)"
@@ -101,7 +101,7 @@ end
 
 def print_student_list
 @students.each do |student|
-  puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  puts "#{student[:name]} (#{student[:cohort]} cohort) #{student[:hobby]} #{student[:height]} #{student[:country_of_birth]}"
   end
 end
 
@@ -118,18 +118,22 @@ def save_students
   file = File.open("students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:hobby], student[:height], student[:country_of_birth]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
 end
 
+def student_hash(name,cohort,hobby,height,country_of_birth)
+  @students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
+end
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
+    student_hash(name,cohort,hobby,height,country_of_birth)
   end
   file.close
 end
