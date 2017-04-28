@@ -1,10 +1,11 @@
 @students = [] # an empty array accessible to all methods
+@file_name = ""
 
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from the file"
   puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -45,6 +46,11 @@ def process(selection)
     else
       puts "I don't know what you mean, try again"
   end
+end
+
+def adding_file_name
+  puts "What is the name of the file?"
+  @file_name = gets.chomp
 end
 
 def input_students
@@ -114,8 +120,9 @@ def print_footer
 end
 
 def save_students
+  adding_file_name
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(@file_name, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:hobby], student[:height], student[:country_of_birth]]
@@ -129,13 +136,18 @@ def student_hash(name,cohort,hobby,height,country_of_birth)
   @students << {name: name, cohort: cohort.to_sym, hobby: hobby, height: height, country_of_birth: country_of_birth}
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
-    student_hash(name,cohort,hobby,height,country_of_birth)
+def load_students(filename = adding_file_name)
+  if File.exist?(filename)
+    file = File.open(filename, "r")
+    file.readlines.each do |line|
+      name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
+      student_hash(name,cohort,hobby,height,country_of_birth)
+    end
+    file.close
+    puts "File loaded"
+  else
+    puts "Cannot find file"
   end
-  file.close
 end
 
 def try_load_students
