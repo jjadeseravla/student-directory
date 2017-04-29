@@ -24,29 +24,19 @@ end
 def process(selection)
   case selection
     when "1"
-      puts "-" * 70
-      puts "You have selected 1"
-      puts "-" * 70
+      interactive_feedback(selection)
       input_students
     when "2"
-      puts "-" * 70
-      puts "You have selected 2"
-      puts "-" * 70
+      interactive_feedback(selection)
       show_students
     when "3"
-      puts "-" * 70
-      puts "You have selected 3"
-      puts "-" * 70
+      interactive_feedback(selection)
       save_students
     when "4"
-      puts "-" * 70
-      puts "You have selected 4"
-      puts "-" * 70
+      interactive_feedback(selection)
       load_students
     when "9"
-      puts "-" * 70
-      puts "You have selected 9"
-      puts "-" * 70
+      interactive_feedback(selection)
       exit
     else
       puts "I don't know what you mean, try again"
@@ -107,7 +97,7 @@ end
 
 def print_header
   puts "The students of Villains Academy"
-  puts "-------------"
+  puts "-" * 15
 end
 
 def print_student_list
@@ -176,6 +166,12 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
   end
+end
+
+def interactive_feedback(selection)
+  puts "-" * 70
+  puts "You have selected #{selection}"
+  puts "-" * 70
 end
 
 # def print_by_cohort(students)
