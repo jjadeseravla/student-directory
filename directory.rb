@@ -1,3 +1,4 @@
+require 'csv'
 @students = [] # an empty array accessible to all methods
 @file_name = ""
 
@@ -63,7 +64,6 @@ def input_students
   while answer == "y"
     puts "Hello.  You will be asked to enter the name and other information of a student"
     puts "To finish, just hit return twice"
-    by_default
   # get the first name
     puts "Enter the name of the student please"
     name = STDIN.gets.chomp
@@ -90,7 +90,6 @@ def input_students
         if input == "y"
           student_hash(name,cohort,hobby,height,country_of_birth)
           puts "Now we have #{@students.count} students"
-          by_default
     # get another name from the user
         puts "Input another student? (Type 'y' for yes or type 'n' for no)"
         answer = STDIN.gets.chomp
@@ -128,14 +127,15 @@ end
 def save_students
   adding_file_name
   # open the file for writing
-  file = File.open(@file_name, "w")
+  File.open(@file_name, mode="w") do |file|
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:hobby], student[:height], student[:country_of_birth]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    @students.each do |student|
+      CSV.open(@file_name, "a+") do |csv|
+        puts student
+        csv << [student[:name], student[:cohort], student[:hobby], student[:height], student[:country_of_birth]]
+      end
+    end
   end
-  file.close
 end
 
 def student_hash(name,cohort,hobby,height,country_of_birth)
@@ -145,12 +145,20 @@ end
 def load_students(filename = adding_file_name)
   if File.exists?(filename)
     #open(filename, mode="r" [, opt]) {|file| block } → obj
-    file = File.open(filename, "r")
-    file.readlines.each do |line|
-      name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
-      student_hash(name,cohort,hobby,height,country_of_birth)
+    File.open(filename, mode="r") do |file|
+      #CSV.foreach("path/to/file.csv") do |row|
+      #file.readlines.each do |line|
+      CSV.foreach(file) do |row|
+        name, cohort, hobby, height, country_of_birth = row
+        student_hash(name,cohort,hobby,height,country_of_birth)
+      end
     end
-    file.close
+    # file = File.open(filename, "r")
+    # file.readlines.each do |line|
+    #   name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
+    #   student_hash(name,cohort,hobby,height,country_of_birth)
+    # end
+    # file.close
     puts "File loaded"
   else
     puts "Cannot find file"
