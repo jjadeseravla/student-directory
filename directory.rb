@@ -1,6 +1,10 @@
 @students = [] # an empty array accessible to all methods
 @file_name = ""
 
+def by_default
+  load_students("students.csv")
+end
+
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
@@ -12,36 +16,36 @@ end
 def interactive_menu
   loop do
     print_menu
-    process((STDIN.gets.chomp))
+    process(STDIN.gets.chomp)
   end
 end
 
 def process(selection)
   case selection
     when "1"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       puts "You have selected 1"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       input_students
     when "2"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       puts "You have selected 2"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       show_students
     when "3"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       puts "You have selected 3"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       save_students
     when "4"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       puts "You have selected 4"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       load_students
     when "9"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       puts "You have selected 9"
-      puts "-------------------------------------------------------------"
+      puts "-" * 70
       exit
     else
       puts "I don't know what you mean, try again"
@@ -59,6 +63,7 @@ def input_students
   while answer == "y"
     puts "Hello.  You will be asked to enter the name and other information of a student"
     puts "To finish, just hit return twice"
+    by_default
   # get the first name
     puts "Enter the name of the student please"
     name = STDIN.gets.chomp
@@ -85,6 +90,7 @@ def input_students
         if input == "y"
           student_hash(name,cohort,hobby,height,country_of_birth)
           puts "Now we have #{@students.count} students"
+          by_default
     # get another name from the user
         puts "Input another student? (Type 'y' for yes or type 'n' for no)"
         answer = STDIN.gets.chomp
@@ -137,7 +143,8 @@ def student_hash(name,cohort,hobby,height,country_of_birth)
 end
 
 def load_students(filename = adding_file_name)
-  if File.exist?(filename)
+  if File.exists?(filename)
+    #open(filename, mode="r" [, opt]) {|file| block } → obj
     file = File.open(filename, "r")
     file.readlines.each do |line|
       name, cohort, hobby, height, country_of_birth = line.chomp.split(',')
@@ -152,8 +159,9 @@ end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exists?(filename) # if it exists
+  if filename.nil? # get out of the method if it isn't given
+    by_default
+  elsif File.exists?(filename) # if it exists
     load_students(filename)
      puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
